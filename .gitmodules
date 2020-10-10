@@ -1,0 +1,3 @@
+[submodule "gemini-to-html"]
+	path = gemini-to-html
+	url = https://github.com/RangerMauve/gemini-to-html.git
