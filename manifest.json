@@ -13,9 +13,7 @@
 		{
 			"matches": ["*"],
 			"js": [
-				"gemini-to-html/parse.js",
-				"gemini-to-html/render.js",
-				"script.js"
+				"bundle.js"
 			]
 		}
 	]
