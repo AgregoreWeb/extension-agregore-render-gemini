@@ -1,12 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-const parse = require('gemini-to-html/parse')
-const render = require('gemini-to-html/render')
-if (location.href.startsWith('gemini')) {
-  fetch(location.href).then(response => response.text().then(text => {
-    document.write(render(parse(text)))
-  }))
-}
-},{"gemini-to-html/parse":3,"gemini-to-html/render":4}],2:[function(require,module,exports){
 'use strict';
 
 const htmlEscape = string => string
@@ -49,7 +41,7 @@ exports.htmlUnescape = (strings, ...values) => {
 	return output;
 };
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 const HEADER = /^(#+)\s+(.*)/
 const PRE = /^```(.*)?/
 const LIST = /^\*\s+(.*)/
@@ -123,7 +115,7 @@ function parse (text) {
   return tokens
 }
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 const { htmlEscape } = require('escape-goat')
 
 module.exports = render
@@ -145,4 +137,62 @@ function render (tokens) {
   }).join('\n')
 }
 
-},{"escape-goat":2}]},{},[1]);
+},{"escape-goat":1}],4:[function(require,module,exports){
+const parse = require('gemini-to-html/parse')
+const render = require('gemini-to-html/render')
+
+if (document.body.children.length === 1 &&
+document.getElementsByTagName('pre')[0] !== undefined) {
+  fetch(location.href).then(response => {
+    if (response.headers.get('Content-Type') === 'text/gemini') {
+      response.text().then(text => {
+        let parsed = parse(text)
+        let rendered = render(parsed)
+
+        console.log(parsed, parsed.find(element => element.type === 'header'), parsed.find(element => element.type === 'header').content)
+
+        let title = parsed.find(element => element.type === 'header').content || 'Gemini Document' // Find relevant page content here?
+
+        document.write(`
+          <!DOCTYPE html>
+          <title>${title}</title>
+          <meta charset="utf-8"/>
+          <meta http-equiv="Content-Type" content="text/html charset=utf-8"/>
+          <link rel="stylesheet" href="agregore://theme/style.css"/>
+          <link rel="stylesheet" href="agregore://theme/highlight.css"/>
+          ${rendered}
+          <script src="agregore://theme/highlight.js"></script>
+          <script>
+            if(window.hljs) hljs.initHighlightingOnLoad()
+
+            const toAnchor = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id]')
+            console.log('Anchoring', toAnchor)
+
+            for(let element of toAnchor) {
+              const anchor = document.createElement('a')
+              anchor.setAttribute('href', '#' + element.id)
+              anchor.setAttribute('class', 'agregore-header-anchor')
+              anchor.innerHTML = element.innerHTML
+              element.innerHTML = anchor.outerHTML
+            }
+
+            const INDENT_HEADINGS = [
+              'H1',
+              'H2',
+              'H3'
+            ]
+            var currentDepth = 0
+            Array.from(document.body.children).forEach(element => {
+              if (INDENT_HEADINGS.includes(element.tagName)) {
+                currentDepth = element.tagName.slice(-1)
+                element.classList.add('agregore-depth' + (currentDepth - 1))
+              } else element.classList.add('agregore-depth' + (currentDepth))
+            })
+          </script>
+        `)
+      })
+    }
+  })
+}
+
+},{"gemini-to-html/parse":2,"gemini-to-html/render":3}]},{},[4]);
