@@ -1,3 +1,4 @@
+/* global location, fetch */
 const parse = require('gemini-to-html/parse')
 const render = require('gemini-to-html/render')
 
