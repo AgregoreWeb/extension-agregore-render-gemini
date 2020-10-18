@@ -1,0 +1,31 @@
+{
+  "name": "agregore-gemini-render",
+  "version": "1.0.0",
+  "description": "Web Extension for rendering Gemini files in Agregore",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -d ./ > ./bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RangerMauve/agregore-gemini-render.git"
+  },
+  "keywords": [
+    "agregore",
+    "gemini",
+    "extension"
+  ],
+  "author": "rangermauve <ranger@mauve.moe> (https://mauve.moe/)",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/RangerMauve/agregore-gemini-render/issues"
+  },
+  "homepage": "https://github.com/RangerMauve/agregore-gemini-render#readme",
+  "dependencies": {
+    "gemini-to-html": "^1.1.1"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0"
+  }
+}

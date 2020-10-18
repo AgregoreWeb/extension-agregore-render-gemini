@@ -6,10 +6,10 @@ document.getElementsByTagName('pre')[0] !== undefined) {
   fetch(location.href).then(response => {
     if (response.headers.get('Content-Type') === 'text/gemini') {
       response.text().then(text => {
-        let parsed = parse(text)
-        let rendered = render(parsed)
+        const parsed = parse(text)
+        const rendered = render(parsed)
 
-        let title = parsed.find(element => element.type === 'header').content || 'Gemini Document' // Find relevant page content here?
+        const title = parsed.find(element => element.type === 'header').content || 'Gemini Document' // Find relevant page content here?
 
         document.write(`
           <!DOCTYPE html>
