@@ -10,7 +10,7 @@ document.getElementsByTagName('pre')[0] !== undefined) {
         const parsed = parse(text)
         const rendered = render(parsed)
 
-        const title = parsed.find(element => element.type === 'header').content || 'Gemini Document' // Find relevant page content here?
+        const title = parsed.find(({ type }) => type === 'header').content || location.href 
 
         document.write(`
           <!DOCTYPE html>
