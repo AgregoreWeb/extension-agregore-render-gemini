@@ -142,15 +142,14 @@ function render (tokens) {
 const parse = require('gemini-to-html/parse')
 const render = require('gemini-to-html/render')
 
-if (document.body.children.length === 1 &&
-document.getElementsByTagName('pre')[0] !== undefined) {
+if (document.querySelector("body>pre[style='word-wrap: break-word; white-space: pre-wrap;']") !== undefined) {
   fetch(location.href).then(response => {
     if (response.headers.get('Content-Type') === 'text/gemini') {
       response.text().then(text => {
         const parsed = parse(text)
         const rendered = render(parsed)
 
-        const title = parsed.find(({ type }) => type === 'header').content || location.href 
+        const title = (parsed.find(({ type }) => type === 'header') || {content: location.href}).content
 
         document.write(`
           <!DOCTYPE html>
