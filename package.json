@@ -11,6 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/RangerMauve/agregore-gemini-render.git"
   },
+  "standard": {
+    "ignore": [
+      "bundle.js"
+    ]
+  },
   "keywords": [
     "agregore",
     "gemini",

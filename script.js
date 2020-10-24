@@ -9,7 +9,7 @@ if (document.querySelector("body>pre[style='word-wrap: break-word; white-space: 
         const parsed = parse(text)
         const rendered = render(parsed)
 
-        const title = (parsed.find(({ type }) => type === 'header') || {content: location.href}).content
+        const title = (parsed.find(({ type }) => type === 'header') || { content: location.href }).content
 
         document.write(`
           <!DOCTYPE html>
