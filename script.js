@@ -1,14 +1,17 @@
 /* global location */
-const parse = require('gemini-to-html/parse')
-const render = require('gemini-to-html/render')
-
 if (document.contentType.includes('text/gemini')) {
+// Only actually load the code if we're in gemini
+// This should improve load times a bit
+// TODO: Dynamically load the gemini code
+  const parse = require('gemini-to-html/parse')
+  const render = require('gemini-to-html/render')
   // Might only work on Chromium
   const text = document.querySelector('pre').innerText
   const parsed = parse(text)
   const rendered = render(parsed)
 
-  const title = (parsed.find(({ type }) => type === 'header') || { content: location.href }).content
+  const firstHeader = parsed.find(({ type }) => type === 'header')
+  const title = firstHeader?.content || location.href
 
   document.write(`
 <!DOCTYPE html>
@@ -32,18 +35,5 @@ ${rendered}
     anchor.innerHTML = element.innerHTML
     element.innerHTML = anchor.outerHTML
   }
-
-  const INDENT_HEADINGS = [
-    'H1',
-    'H2',
-    'H3'
-  ]
-  var currentDepth = 0
-  Array.from(document.body.children).forEach(element => {
-    if (INDENT_HEADINGS.includes(element.tagName)) {
-      currentDepth = element.tagName.slice(-1)
-      element.classList.add('agregore-depth' + (currentDepth - 1))
-    } else element.classList.add('agregore-depth' + (currentDepth))
-  })
 </script>`)
 }
