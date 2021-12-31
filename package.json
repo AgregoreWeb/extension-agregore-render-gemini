@@ -1,6 +1,6 @@
 {
   "name": "agregore-gemini-render",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Web Extension for rendering Gemini files in Agregore",
   "main": "script.js",
   "scripts": {
